@@ -96,14 +96,14 @@ def message():
     # Add coach message via GPT-4
     session['messages'].append({"role": "assistant", "content": next_question})
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=session['messages'],
-        temperature=0.7,
-        max_tokens=300
+    client = OpenAI()
+    response = client.chat.completions.create(
+    model="gpt-4",
+    messages=session['messages'],
+    temperature=0.7,
+    max_tokens=300
     )
-
-    reply = response['choices'][0]['message']['content']
+    reply = response.choices[0].message.content
     session['messages'].append({"role": "assistant", "content": reply})
 
     return jsonify({"message": reply})
