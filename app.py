@@ -9,8 +9,6 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'
 
-openai.api_key = os.environ.get("OPENAI_API_KEY")
-
 # Google Sheets setup
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 creds_dict = json.loads(os.environ.get('SERVICE_ACCOUNT_JSON'))
