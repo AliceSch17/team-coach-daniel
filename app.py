@@ -17,7 +17,7 @@ client_gsheets = gspread.authorize(creds)
 sheet = client_gsheets.open_by_key(os.environ.get("SHEET_ID")).sheet1
 
 # GPT-4 client
-client = OpenAI()
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 # Chat structure
 coach_prompt = """
