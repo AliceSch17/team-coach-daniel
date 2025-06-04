@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Team Coach Daniel</title>
+</head>
+<body>
+    <h2>Chat with Coach Daniel</h2>
+    <div id="chat-box" style="border:1px solid #ccc;padding:10px;width:80%;height:300px;overflow:auto;"></div>
+    <input id="user-input" placeholder="Type here..." style="width:70%;">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById("user-input");
+            const message = input.value;
+            if (!message) return;
+            appendMessage("You", message);
+            input.value = "";
+
+            const res = await fetch("/message", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message })
+            });
+            const data = await res.json();
+            appendMessage("Daniel", data.message);
+            if (data.summary) {
+                appendMessage("Daniel", "Here’s your team charter:");
+                for (const [key, val] of Object.entries(data.summary)) {
+                    appendMessage("→ " + key, val);
+                }
+            }
+        }
+
+        function appendMessage(sender, text) {
+            const box = document.getElementById("chat-box");
+            const line = document.createElement("p");
+            line.innerHTML = `<strong>${sender}:</strong> ${text}`;
+            box.appendChild(line);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        // Start chat
+        fetch("/start", { method: "POST" })
+            .then(res => res.json())
+            .then(data => appendMessage("Daniel", data.message));
+    </script>
+</body>
+</html>
