@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template, session
-from openai
+import openai
 import os
 import json
 import gspread
