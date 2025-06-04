@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template, session
-from openai import OpenAI
+from openai
 import os
 import json
 import gspread
@@ -16,8 +16,6 @@ creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client_gsheets = gspread.authorize(creds)
 sheet = client_gsheets.open_by_key(os.environ.get("SHEET_ID")).sheet1
 
-# GPT-4 client
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 # Chat structure
 coach_prompt = """
@@ -98,13 +96,13 @@ def message():
         session['messages'].append({"role": "assistant", "content": step_questions[next_step]})
 
         # Call GPT-4
-        response = client.chat.completions.create(
+        response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=session['messages'],
             temperature=0.7,
             max_tokens=300
-        )
-        reply = response.choices[0].message.content
+            )
+        reply = response['choices'][0]['message']['content']
         session['messages'].append({"role": "assistant", "content": reply})
 
         return jsonify({"message": reply})
